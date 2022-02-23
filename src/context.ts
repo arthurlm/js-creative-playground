@@ -27,8 +27,8 @@ interface Entity {
 
 export class Scene {
   public entites: Entity[];
-  public onStart: () => void;
-  public onEnd: () => void;
+  public onStart: (context: Context) => void;
+  public onEnd: (context: Context) => void;
 
   constructor() {
     function identity() {}
@@ -41,14 +41,14 @@ export class Scene {
   loop(context: Context) {
     context.nextTick();
 
-    this.onStart();
+    this.onStart(context);
 
     for (let entity of this.entites) {
       entity.draw(context);
       entity.annimate(context);
     }
 
-    this.onEnd();
+    this.onEnd(context);
   }
 }
 
