@@ -1,5 +1,5 @@
 import { Context } from "./context";
-import scene from "./scenes/scene1";
+import scene from "./scenes/scene2";
 
 const canvas = document.getElementById("main-canvas") as HTMLCanvasElement;
 

@@ -20,7 +20,7 @@ export class Context {
   }
 }
 
-interface Entity {
+export interface Entity {
   annimate(context: Context): void;
   draw(context: Context): void;
 }
