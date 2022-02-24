@@ -1,8 +1,10 @@
 import { Context, Entity, Scene } from "../context";
 import { Point2 } from "../geometry";
 import { rgba } from "../helpers";
+import { radToDeg } from "../math";
 
 const scene = new Scene();
+scene.frameOpacity = 0.2;
 
 const MAIN_CIRCLE_RADIUS = 350;
 
@@ -10,6 +12,7 @@ class Particle implements Entity {
   position: Point2;
   tick: number;
   alpha: number;
+  hue: number;
 
   constructor(context: Context, phi: number) {
     this.position = new Point2(
@@ -20,6 +23,7 @@ class Particle implements Entity {
     );
     this.tick = 0;
     this.alpha = 10.0;
+    this.hue = (context.tickCount / 2 + radToDeg(phi)) % 360;
   }
 
   annimate(context: Context): void {
@@ -30,7 +34,8 @@ class Particle implements Entity {
   draw(context: Context): void {
     const ctx = context.ctx;
 
-    ctx.strokeStyle = rgba(1, 1, 1, Math.min(this.alpha, 1.0));
+    const alpha = Math.min(this.alpha, 1.0);
+    ctx.strokeStyle = `hsla(${this.hue}, 100%, 50%, ${alpha})`;
 
     ctx.beginPath();
     ctx.arc(
