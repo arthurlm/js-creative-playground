@@ -56,6 +56,8 @@ class Particle implements Entity {
 
 const scene = new Scene();
 
+scene.frameOpacity = 0.2;
+
 scene.onStart = (context) => {
   while (scene.entites.length < 5000) {
     scene.entites.push(new Particle(context));

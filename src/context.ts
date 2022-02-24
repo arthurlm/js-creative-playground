@@ -1,3 +1,5 @@
+import { rgba } from "./helpers";
+
 export class Context {
   public tickCount: number = 0;
   public ctx: CanvasRenderingContext2D;
@@ -10,7 +12,6 @@ export class Context {
   }
 
   nextTick() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.tickCount += 1;
   }
 
@@ -37,6 +38,7 @@ export interface Entity {
 }
 
 export class Scene {
+  public frameOpacity: number;
   public entites: Entity[];
   public onStart: (context: Context) => void;
   public onEnd: (context: Context) => void;
@@ -44,6 +46,7 @@ export class Scene {
   constructor() {
     function identity() {}
 
+    this.frameOpacity = 1.0;
     this.entites = [];
     this.onStart = identity;
     this.onEnd = identity;
@@ -57,6 +60,14 @@ export class Scene {
 
   render(context: Context) {
     context.nextTick();
+
+    const ctx = context.ctx;
+    if (this.frameOpacity < 1.0) {
+      ctx.fillStyle = rgba(0, 0, 0, this.frameOpacity);
+      ctx.fillRect(0, 0, context.width, context.height);
+    } else {
+      ctx.clearRect(0, 0, context.width, context.height);
+    }
 
     this.onStart(context);
 
