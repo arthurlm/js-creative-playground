@@ -1,5 +1,5 @@
 import { Context, mainLoop } from "./context";
-import scene from "./scenes/scene2";
+import scene from "./scenes/scene1b";
 
 const canvas = document.getElementById("main-canvas") as HTMLCanvasElement;
 const debugDisplay = document.getElementById("debug-display");
