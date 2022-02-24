@@ -1,6 +1,8 @@
 import { rgba } from "./helpers";
 
 export class Context {
+  public lastRequestFrameId?: number;
+
   public tickCount: number = 0;
   public ctx: CanvasRenderingContext2D;
 
@@ -9,6 +11,11 @@ export class Context {
     private debugDisplay: HTMLElement
   ) {
     this.ctx = canvas.getContext("2d");
+  }
+
+  reset(): void {
+    this.tickCount = 0;
+    this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
   nextTick() {
@@ -50,6 +57,10 @@ export class Scene {
     this.entites = [];
     this.onStart = identity;
     this.onEnd = identity;
+  }
+
+  clearEntities(): void {
+    this.entites.splice(0, this.entites.length);
   }
 
   update(context: Context) {
@@ -106,13 +117,15 @@ export function mainLoop(
         `entity count: ${scene.entites.length}`,
         `update time: ${tUpdateEnd - tUpdateStart}ms`,
         `rendering time: ${tRenderEnd - tRenderStart}ms`,
+        `request frame ID: ${context.lastRequestFrameId}`,
+        `tick: ${context.tickCount}`,
       ]);
     }
 
-    requestAnimationFrame(onAnimationFrame);
+    context.lastRequestFrameId = requestAnimationFrame(onAnimationFrame);
   }
 
-  requestAnimationFrame(onAnimationFrame);
+  context.lastRequestFrameId = requestAnimationFrame(onAnimationFrame);
 }
 
 export default {
