@@ -1,5 +1,5 @@
-import { Context } from "./context";
-import scene from "./scenes/scene2";
+import { Context, mainLoop } from "./context";
+import scene from "./scenes/scene3";
 
 const canvas = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -9,4 +9,4 @@ canvas.height = window.innerHeight - padding;
 
 const context = new Context(canvas);
 
-setInterval(() => scene.loop(context), 1000 / 60);
+mainLoop(context, scene);

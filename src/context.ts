@@ -38,21 +38,53 @@ export class Scene {
     this.onEnd = identity;
   }
 
-  loop(context: Context) {
+  update(context: Context) {
+    for (let entity of this.entites) {
+      entity.annimate(context);
+    }
+  }
+
+  render(context: Context) {
     context.nextTick();
 
     this.onStart(context);
 
     for (let entity of this.entites) {
       entity.draw(context);
-      entity.annimate(context);
     }
 
     this.onEnd(context);
   }
 }
 
+export interface LoopOptions {
+  logPerformances?: boolean;
+}
+
+export function mainLoop(
+  context: Context,
+  scene: Scene,
+  options: LoopOptions = {}
+): void {
+  function onAnimationFrame() {
+    scene.update(context);
+
+    var startTime = performance.now();
+    scene.render(context);
+    var endTime = performance.now();
+
+    if (options.logPerformances) {
+      console.log(`Rendering loop takes: ${endTime - startTime}ms`);
+    }
+
+    requestAnimationFrame(onAnimationFrame);
+  }
+
+  requestAnimationFrame(onAnimationFrame);
+}
+
 export default {
   Context,
   Scene,
+  mainLoop,
 };
