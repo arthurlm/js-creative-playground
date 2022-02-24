@@ -4,7 +4,7 @@ import { rgba } from "../helpers";
 
 const scene = new Scene();
 
-const MAIN_CIRCLE_RADIUS = 200;
+const MAIN_CIRCLE_RADIUS = 350;
 
 class Particle implements Entity {
   position: Point2;
@@ -24,7 +24,7 @@ class Particle implements Entity {
 
   annimate(context: Context): void {
     this.tick += 1;
-    this.alpha *= 0.95;
+    this.alpha *= 0.97;
   }
 
   draw(context: Context): void {
@@ -36,7 +36,7 @@ class Particle implements Entity {
     ctx.arc(
       this.position.x,
       this.position.y,
-      this.tick * 2,
+      this.tick * 1.5,
       0,
       Math.PI * 2,
       false
