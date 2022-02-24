@@ -1,9 +1,9 @@
 import { Context, Entity, Scene } from "../context";
 import { Point2 } from "../geometry";
-import { rgba } from "../helpers";
 import { degToRad } from "../math";
 
 const scene = new Scene();
+scene.frameOpacity = 0.05;
 
 const MAIN_RADIUS = 20;
 
@@ -13,15 +13,17 @@ class Triangle implements Entity {
   p3: Point2;
   alpha: number;
   radiusRatio: number;
+  hue: number;
 
   constructor(context: Context) {
     this.alpha = context.tickCount;
     this.radiusRatio = 1.0;
+    this.hue = (context.tickCount / 2) % 360;
     this.annimate(context);
   }
 
   annimate(context: Context): void {
-    const theta = context.tickCount / 50 + this.alpha;
+    const theta = context.tickCount / 500 + this.alpha;
     const radius = MAIN_RADIUS * this.radiusRatio;
 
     this.p1 = new Point2(
@@ -37,13 +39,14 @@ class Triangle implements Entity {
       context.height / 2 + radius * Math.sin(degToRad(240) + theta)
     );
 
-    this.radiusRatio *= 1.01;
+    this.radiusRatio *= 1.005;
   }
 
   draw(context: Context): void {
     const ctx = context.ctx;
 
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = `hsl(${this.hue}, 100%, 50%)`;
+    ctx.lineWidth = 2;
 
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
@@ -55,7 +58,7 @@ class Triangle implements Entity {
 }
 
 scene.onStart = (context) => {
-  if (context.tickCount % 50 == 0) {
+  if (context.tickCount % 20 == 0) {
     scene.entites.push(new Triangle(context));
   }
 };
