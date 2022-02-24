@@ -2,13 +2,24 @@ export class Context {
   public tickCount: number = 0;
   public ctx: CanvasRenderingContext2D;
 
-  constructor(private canvas: HTMLCanvasElement) {
+  constructor(
+    private canvas: HTMLCanvasElement,
+    private debugDisplay: HTMLElement
+  ) {
     this.ctx = canvas.getContext("2d");
   }
 
   nextTick() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.tickCount += 1;
+  }
+
+  setDebugVisibility(visible: boolean): void {
+    this.debugDisplay.style.visibility = visible ? "visible" : "hidden";
+  }
+
+  setDebugInfo(infos: string[]): void {
+    this.debugDisplay.innerText = infos.join("\n");
   }
 
   get width(): number {
@@ -58,7 +69,7 @@ export class Scene {
 }
 
 export interface LoopOptions {
-  logPerformances?: boolean;
+  debugEnabled?: boolean;
 }
 
 export function mainLoop(
@@ -66,15 +77,25 @@ export function mainLoop(
   scene: Scene,
   options: LoopOptions = {}
 ): void {
+  // Prepare DOM
+  context.setDebugVisibility(options.debugEnabled);
+
+  // Define main loop
   function onAnimationFrame() {
+    const tUpdateStart = performance.now();
     scene.update(context);
+    const tUpdateEnd = performance.now();
 
-    var startTime = performance.now();
+    const tRenderStart = performance.now();
     scene.render(context);
-    var endTime = performance.now();
+    const tRenderEnd = performance.now();
 
-    if (options.logPerformances) {
-      console.log(`Rendering loop takes: ${endTime - startTime}ms`);
+    if (options.debugEnabled) {
+      context.setDebugInfo([
+        `entity count: ${scene.entites.length}`,
+        `update time: ${tUpdateEnd - tUpdateStart}ms`,
+        `rendering time: ${tRenderEnd - tRenderStart}ms`,
+      ]);
     }
 
     requestAnimationFrame(onAnimationFrame);
