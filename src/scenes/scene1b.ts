@@ -23,7 +23,7 @@ class Particle implements Entity {
 
     this.offset = randRange(-10, 10);
     this.alpha = randRange(0, 0.8);
-    this.hue = randRange(140, 300);
+    this.hue = (randRange(0, 120) + context.tickCount) % 360;
   }
 
   annimate(context: Context) {
