@@ -1,4 +1,5 @@
 import { Context, Scene } from "../context";
+import { buildSceneTitle } from "../entities/text";
 import { Point2, Polygon } from "../geometry";
 import { degToRad } from "../math";
 import {
@@ -27,8 +28,11 @@ class AnimatedPolygon extends Polygon {
 
 const scene = new Scene();
 
-scene.onStart = () => {
+scene.onStart = (context) => {
   if (scene.entites.length == 0) {
+    // Scene title
+    scene.entites.push(buildSceneTitle(context, "Oscillator demo"));
+
     // Const
     scene.entites.push(
       new AnimatedPolygon(1 / 4, 1 / 3, new ConstOscillator(0.0))
