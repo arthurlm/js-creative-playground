@@ -18,7 +18,7 @@ import scene1b from "./scenes/scene1b";
 import scene2 from "./scenes/scene2";
 import scene3 from "./scenes/scene3";
 
-let selection = 0;
+let selection = 1;
 const scenes = [scene1, scene1b, scene2, scene3];
 
 // Add document listeners

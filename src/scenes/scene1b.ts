@@ -1,6 +1,7 @@
 import { Context, Entity, Scene } from "../context";
 import { Point2 } from "../geometry";
 import { degToRad, randRange } from "../math";
+import { randNormal } from "../random";
 
 class Particle implements Entity {
   public radius: number;
@@ -13,7 +14,8 @@ class Particle implements Entity {
   constructor(context: Context) {
     this.radius = randRange(3.0, 5.0);
 
-    this.position = Point2.random().scaleSized(context);
+    this.position = new Point2(randNormal(), randNormal()).scaleSized(context);
+
     this.direction = Point2.random()
       .translate(-0.5)
       .translateY(-0.5)
@@ -59,7 +61,7 @@ const scene = new Scene();
 scene.frameOpacity = 0.05;
 
 scene.onStart = (context) => {
-  while (scene.entites.length < 5000) {
+  while (scene.entites.length < 1000) {
     scene.entites.push(new Particle(context));
   }
 };
