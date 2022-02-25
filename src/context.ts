@@ -63,6 +63,17 @@ export class Scene {
     this.entites.splice(0, this.entites.length);
   }
 
+  private clearScreen(context: Context) {
+    const ctx = context.ctx;
+
+    if (this.frameOpacity < 1.0) {
+      ctx.fillStyle = rgba(0, 0, 0, this.frameOpacity);
+      ctx.fillRect(0, 0, context.width, context.height);
+    } else {
+      ctx.clearRect(0, 0, context.width, context.height);
+    }
+  }
+
   update(context: Context) {
     for (let entity of this.entites) {
       entity.annimate(context);
@@ -70,16 +81,7 @@ export class Scene {
   }
 
   render(context: Context) {
-    context.nextTick();
-
-    const ctx = context.ctx;
-    if (this.frameOpacity < 1.0) {
-      ctx.fillStyle = rgba(0, 0, 0, this.frameOpacity);
-      ctx.fillRect(0, 0, context.width, context.height);
-    } else {
-      ctx.clearRect(0, 0, context.width, context.height);
-    }
-
+    this.clearScreen(context);
     this.onStart(context);
 
     for (let entity of this.entites) {
@@ -104,6 +106,8 @@ export function mainLoop(
 
   // Define main loop
   function onAnimationFrame() {
+    context.nextTick();
+
     const tUpdateStart = performance.now();
     scene.update(context);
     const tUpdateEnd = performance.now();
