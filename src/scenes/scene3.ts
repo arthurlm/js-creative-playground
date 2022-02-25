@@ -1,25 +1,39 @@
-import { Context, Entity, Scene } from "../context";
+import { Context, Scene } from "../context";
 import { Point2, Polygon } from "../geometry";
-import { degToRad } from "../math";
+import {
+  CompositeOscillator,
+  ConstOscillator,
+  LinearOscillator,
+  Oscillator,
+} from "../oscillator";
 
 const scene = new Scene();
 scene.frameOpacity = 0.05;
 
 class AnimatedPolygon extends Polygon {
-  alpha: number;
   radiusRatio: number;
   hue: number;
+
+  angleOscillator: Oscillator;
 
   constructor(context: Context) {
     super();
 
-    this.alpha = context.tickCount;
     this.radiusRatio = 20.0;
     this.hue = (context.tickCount / 2) % 360;
+
+    this.angleOscillator = new CompositeOscillator([
+      new LinearOscillator({
+        speed: 0.005,
+        min: 0,
+        max: 2 * Math.PI,
+      }),
+      new ConstOscillator(context.tickCount),
+    ]);
   }
 
   annimate(context: Context): void {
-    const theta = context.tickCount / 500 + this.alpha;
+    const theta = this.angleOscillator.valueFramed(context);
     const radius = this.radiusRatio;
     this.updatePoints(Point2.center(context), 5, radius, theta);
 
