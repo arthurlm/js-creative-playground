@@ -1,5 +1,6 @@
 import { Context, Scene } from "../context";
 import { Point2, Polygon } from "../geometry";
+import { randRange } from "../math";
 import {
   CompositeOscillator,
   ConstOscillator,
@@ -13,7 +14,7 @@ scene.frameOpacity = 0.05;
 class AnimatedPolygon extends Polygon {
   radiusRatio: number;
   hue: number;
-
+  lineWidth: number;
   angleOscillator: Oscillator;
 
   constructor(context: Context) {
@@ -21,6 +22,7 @@ class AnimatedPolygon extends Polygon {
 
     this.radiusRatio = 20.0;
     this.hue = (context.tickCount / 2) % 360;
+    this.lineWidth = randRange(0, 5);
 
     this.angleOscillator = new CompositeOscillator([
       new LinearOscillator({
@@ -42,7 +44,7 @@ class AnimatedPolygon extends Polygon {
 
   drawBegin(context: Context): void {
     context.ctx.strokeStyle = `hsl(${this.hue}, 40%, 65%)`;
-    context.ctx.lineWidth = 2;
+    context.ctx.lineWidth = this.lineWidth;
   }
 }
 
