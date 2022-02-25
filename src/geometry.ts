@@ -1,3 +1,5 @@
+import { Context, Entity } from "./context";
+
 export interface Sized {
   width: number;
   height: number;
@@ -96,6 +98,65 @@ export class Point2 {
 
   static random(): Point2 {
     return new Point2(Math.random(), Math.random());
+  }
+}
+
+export class Polygon implements Entity {
+  points: Point2[];
+
+  constructor() {
+    this.points = [];
+  }
+
+  updatePoints(
+    center: Point2,
+    pointCount: number,
+    radius: number,
+    thetaOffset: number
+  ): void {
+    this.points = [];
+
+    for (let i = 0; i < pointCount; i++) {
+      const theta = 2 * Math.PI * (i / pointCount);
+
+      this.points.push(
+        new Point2(
+          center.x + Math.cos(theta + thetaOffset) * radius,
+          center.y + Math.sin(theta + thetaOffset) * radius
+        )
+      );
+    }
+  }
+
+  annimate(context: Context): void {}
+
+  drawBegin(context: Context): void {
+    context.ctx.strokeStyle = "white";
+    context.ctx.lineWidth = 1;
+  }
+
+  drawEnd(context: Context): void {
+    context.ctx.stroke();
+  }
+
+  draw(context: Context): void {
+    const ctx = context.ctx;
+    const pointCount = this.points.length;
+    if (pointCount == 0) {
+      return;
+    }
+
+    this.drawBegin(context);
+
+    ctx.beginPath();
+    ctx.moveTo(this.points[pointCount - 1].x, this.points[pointCount - 1].y);
+
+    for (let i = 0; i < pointCount; i++) {
+      const point = this.points[i];
+      ctx.lineTo(point.x, point.y);
+    }
+
+    this.drawEnd(context);
   }
 }
 
