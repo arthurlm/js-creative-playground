@@ -35,7 +35,7 @@ class Particle implements Entity {
     const ctx = context.ctx;
 
     const alpha = Math.min(this.alpha, 1.0);
-    ctx.strokeStyle = `hsla(${this.hue}, 100%, 50%, ${alpha})`;
+    ctx.strokeStyle = `hsla(${this.hue}, 70%, 50%, ${alpha})`;
 
     ctx.beginPath();
     ctx.arc(

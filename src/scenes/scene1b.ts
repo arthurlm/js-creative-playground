@@ -40,7 +40,7 @@ class Particle implements Entity {
     const ctx = context.ctx;
     const alpha = this.alpha * this.alpha;
 
-    ctx.fillStyle = `hsla(${this.hue}, 100%, 50%, ${alpha})`;
+    ctx.fillStyle = `hsla(${this.hue}, 70%, 50%, ${alpha})`;
     ctx.beginPath();
     ctx.arc(
       this.position.x,
@@ -56,7 +56,7 @@ class Particle implements Entity {
 
 const scene = new Scene();
 
-scene.frameOpacity = 0.2;
+scene.frameOpacity = 0.05;
 
 scene.onStart = (context) => {
   while (scene.entites.length < 5000) {
