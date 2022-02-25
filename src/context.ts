@@ -3,23 +3,28 @@ import { rgba } from "./helpers";
 export class Context {
   public lastRequestFrameId?: number;
 
-  public tickCount: number = 0;
+  public timestamp: number;
+  public tickCount: number;
   public ctx: CanvasRenderingContext2D;
 
   constructor(
     private canvas: HTMLCanvasElement,
     private debugDisplay: HTMLElement
   ) {
+    this.tickCount = 0;
+    this.timestamp = Date.now() / 1000.0;
     this.ctx = canvas.getContext("2d");
   }
 
   reset(): void {
     this.tickCount = 0;
+    this.timestamp = Date.now() / 1000.0;
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
   nextTick() {
     this.tickCount += 1;
+    this.timestamp = Date.now() / 1000.0;
   }
 
   setDebugVisibility(visible: boolean): void {
@@ -123,6 +128,7 @@ export function mainLoop(
         `rendering time: ${tRenderEnd - tRenderStart}ms`,
         `request frame ID: ${context.lastRequestFrameId}`,
         `tick: ${context.tickCount}`,
+        `timestamp: ${context.timestamp}`,
       ]);
     }
 
