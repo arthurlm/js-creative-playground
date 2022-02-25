@@ -111,3 +111,22 @@ export class LinearOscillator extends GenericOscillator {
     return ((t * this.speed) % (this.max - this.min)) + this.min;
   }
 }
+
+/**
+ * Combine multiple oscillators.
+ */
+export class CompositeOscillator implements Oscillator {
+  constructor(public components: Oscillator[]) {}
+
+  valueFramed(context: Context): number {
+    return this.components
+      .map((x) => x.valueFramed(context))
+      .reduce((acc, x) => acc + x, 0.0);
+  }
+
+  valueTimed(context: Context): number {
+    return this.components
+      .map((x) => x.valueTimed(context))
+      .reduce((acc, x) => acc + x, 0.0);
+  }
+}
