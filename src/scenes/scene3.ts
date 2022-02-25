@@ -27,7 +27,7 @@ class AnimatedPolygon extends Polygon {
   }
 
   drawBegin(context: Context): void {
-    context.ctx.strokeStyle = `hsl(${this.hue}, 70%, 50%)`;
+    context.ctx.strokeStyle = `hsl(${this.hue}, 40%, 65%)`;
     context.ctx.lineWidth = 2;
   }
 }
