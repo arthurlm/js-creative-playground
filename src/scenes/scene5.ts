@@ -1,38 +1,49 @@
-import { Hsla, Rgba } from "../colors";
+import { buildPalette, Hsla } from "../colors";
 import { Context, Entity, Scene } from "../context";
 import { Point2 } from "../geometry";
 import { randRange } from "../math";
+import { NoiseGenerator, Perlin1DNoiseGenerator } from "../random";
 
 const scene = new Scene();
 
-const POINT_COUNT = 10.0;
+const POINT_COUNT = 25.0;
+const PALETTE = buildPalette(
+  "f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-4361ee-4895ef-4cc9f0"
+);
 
 class Circle implements Entity {
-  direction: Point2;
   color: Hsla;
+
+  directionX: NoiseGenerator;
+  directionY: NoiseGenerator;
+
   radius: number;
+  radiusGenerator: NoiseGenerator;
 
   constructor(context: Context, private center: Point2) {
-    this.direction = Point2.random().scale(randRange(1, 10));
-    this.color = Rgba.fromHex("#f72585FF").toHsla();
-    this.radius = Math.min(
-      context.width / (POINT_COUNT + 1) / 2,
-      context.height / (POINT_COUNT + 1) / 2
-    );
+    this.directionX = new Perlin1DNoiseGenerator({
+      amplitude: 5,
+    });
+    this.directionY = new Perlin1DNoiseGenerator({
+      amplitude: 5,
+    });
+
+    this.color = PALETTE[Math.floor(randRange(0, PALETTE.length))].toHsla();
+    this.radiusGenerator = new Perlin1DNoiseGenerator({
+      amplitude: Math.min(
+        context.width / (POINT_COUNT + 1) / 2,
+        context.height / (POINT_COUNT + 1) / 2
+      ),
+      waveLength: 64,
+    });
   }
 
   annimate(context: Context): void {
-    this.center = this.center.translateVec(
-      this.direction.scale(1 / context.tickCount)
-    );
-
-    if (context.tickCount % 2 == 0) {
-      this.color.lightness = Math.max(0, this.color.lightness - 1);
-    } else {
-      this.color.saturation = Math.max(0, this.color.saturation + 1);
-    }
-
-    this.radius *= 0.999;
+    this.center = this.center
+      .translateX(this.directionX.nextValue() - 2.5)
+      .translateY(this.directionY.nextValue() - 2.5)
+      .clip(context);
+    this.radius = this.radiusGenerator.nextValue();
   }
 
   draw(context: Context): void {
@@ -65,6 +76,6 @@ scene.onStart = (context) => {
   }
 };
 
-scene.frameOpacity = 0;
+scene.frameOpacity = 0.05;
 
 export default scene;

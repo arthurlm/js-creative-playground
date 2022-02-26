@@ -78,6 +78,11 @@ export class Rgba {
   }
 }
 
+export function buildPalette(value: string): Rgba[] {
+  return value.split("-").map((x) => Rgba.fromHex(`#${x}`));
+}
+
 export default {
   Hsla,
+  Rgba,
 };

@@ -1,4 +1,4 @@
-import { Hsla, Rgba } from "./colors";
+import { buildPalette, Hsla, Rgba } from "./colors";
 
 test("test parse rgba invalid", () => {
   expect(() => Rgba.fromHex("")).toThrow("invalid value");
@@ -20,4 +20,21 @@ test("test hsl to rgb", () => {
 
   rgb = Rgba.fromHex("#2A9D8F");
   expect(rgb.toHsla()).toStrictEqual(new Hsla(173, 58, 39));
+});
+
+test("build palette", () => {
+  const palette =
+    "f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-4361ee-4895ef-4cc9f0";
+  expect(buildPalette(palette)).toStrictEqual([
+    new Rgba(247, 37, 133),
+    new Rgba(181, 23, 158),
+    new Rgba(114, 9, 183),
+    new Rgba(86, 11, 173),
+    new Rgba(72, 12, 168),
+    new Rgba(58, 12, 163),
+    new Rgba(63, 55, 201),
+    new Rgba(67, 97, 238),
+    new Rgba(72, 149, 239),
+    new Rgba(76, 201, 240),
+  ]);
 });
