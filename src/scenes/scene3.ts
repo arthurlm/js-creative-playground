@@ -30,13 +30,8 @@ class AnimatedPolygon extends Polygon {
         speed: 0.002,
         min: 0,
         max: 2 * Math.PI,
-        thetaOffset: context.tickCount,
       }),
-      new SineOscilator({
-        speed: 0.005,
-        min: 0,
-        max: 2 * Math.PI,
-      }),
+
       new ConstOscillator(context.tickCount),
     ]);
   }
