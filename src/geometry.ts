@@ -12,6 +12,10 @@ export class Point2 {
     return new Point2(this.x, this.y);
   }
 
+  round(): Point2 {
+    return new Point2(Math.round(this.x), Math.round(this.y));
+  }
+
   translateX(factor: number): Point2 {
     return new Point2(this.x + factor, this.y);
   }
