@@ -24,14 +24,17 @@ export class Rgba {
   }
 
   static fromHex(value: string): Rgba {
-    if (!value.startsWith("#") || value.length != 9) {
+    if (!value.startsWith("#")) {
       throw new Error(`invalid value: ${value}`);
+    }
+    if (value.length < 7 || value.length > 9) {
+      throw new Error(`invalid value length: ${value}`);
     }
 
     const r = parseInt(value.slice(1, 3), 16);
     const g = parseInt(value.slice(3, 5), 16);
     const b = parseInt(value.slice(5, 7), 16);
-    const a = parseInt(value.slice(7, 9), 16);
+    const a = value.length == 9 ? parseInt(value.slice(7, 9), 16) : 255;
     return new Rgba(r, g, b, a);
   }
 
@@ -66,7 +69,12 @@ export class Rgba {
       h /= 6;
     }
 
-    return new Hsla(h * 360.0, s * 100.0, l * 100.0, this.alpha / 255.0);
+    return new Hsla(
+      Math.round(h * 360.0),
+      Math.round(s * 100.0),
+      Math.round(l * 100.0),
+      Math.round((this.alpha / 255.0) * 100.0)
+    );
   }
 }
 
