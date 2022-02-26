@@ -32,7 +32,7 @@ const scenes = [
   scene4,
   scene5,
 ];
-let selection = scenes.length - 1;
+let selection = scenes.length - 2;
 
 // Add document listeners
 document.addEventListener("keyup", (e) => {
