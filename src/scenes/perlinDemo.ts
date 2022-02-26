@@ -1,23 +1,19 @@
 import { Context, Entity, Scene } from "../context";
 import { buildSceneTitle } from "../entities/text";
 import { Point2 } from "../geometry";
-import { NoiseGenerator, Perlin1DNoiseGenerator } from "../random";
+import {
+  NoiseGenerator,
+  Perlin1DHarmonicNoiseGenerator,
+  Perlin1DNoiseGenerator,
+} from "../random";
 
 class Circle implements Entity {
-  center: Point2;
-  noiseGeneratorX: NoiseGenerator;
-  noiseGeneratorY: NoiseGenerator;
-
-  constructor(context: Context) {
-    this.center = Point2.center(context);
-    this.noiseGeneratorX = new Perlin1DNoiseGenerator({
-      amplitude: context.width,
-    });
-    this.noiseGeneratorY = new Perlin1DNoiseGenerator({
-      amplitude: context.height,
-      waveLength: 256,
-    });
-  }
+  constructor(
+    private color: string,
+    private center: Point2,
+    private noiseGeneratorX: NoiseGenerator,
+    private noiseGeneratorY: NoiseGenerator
+  ) {}
 
   annimate(context: Context): void {
     this.center.x = this.noiseGeneratorX.nextValue();
@@ -27,7 +23,7 @@ class Circle implements Entity {
   draw(context: Context): void {
     const radius = 20;
 
-    context.ctx.fillStyle = "white";
+    context.ctx.fillStyle = this.color;
     context.ctx.beginPath();
     context.ctx.arc(
       this.center.x,
@@ -46,7 +42,34 @@ const scene = new Scene();
 scene.onStart = (context) => {
   if (scene.entites.length == 0) {
     scene.entites.push(buildSceneTitle(context, "Demo perlin noise"));
-    scene.entites.push(new Circle(context));
+
+    scene.entites.push(
+      new Circle(
+        "red",
+        Point2.center(context),
+        new Perlin1DNoiseGenerator({
+          amplitude: context.width,
+        }),
+        new Perlin1DNoiseGenerator({
+          amplitude: context.height,
+          waveLength: 256,
+        })
+      )
+    );
+
+    scene.entites.push(
+      new Circle(
+        "green",
+        Point2.center(context),
+        new Perlin1DHarmonicNoiseGenerator({
+          amplitude: context.width,
+        }),
+        new Perlin1DHarmonicNoiseGenerator({
+          amplitude: context.height,
+          waveLength: 256,
+        })
+      )
+    );
   }
 };
 

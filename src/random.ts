@@ -76,7 +76,58 @@ export class Perlin1DNoiseGenerator implements NoiseGenerator {
   }
 }
 
+/**
+ * Merge multiple noise generator together.
+ */
+export class CompositeNoiseGenerator implements NoiseGenerator {
+  constructor(private generators: NoiseGenerator[]) {}
+
+  nextValue(): number {
+    return this.generators
+      .map((x) => x.nextValue())
+      .reduce((acc, x) => acc + x, 0.0);
+  }
+}
+
+export interface Perlin1DHarmonicNoiseGeneratorParams
+  extends Perlin1DNoiseGeneratorParams {
+  octave?: number;
+  divisor?: number;
+}
+
+export class Perlin1DHarmonicNoiseGenerator implements NoiseGenerator {
+  private composite: CompositeNoiseGenerator;
+
+  constructor(params: Perlin1DHarmonicNoiseGeneratorParams = {}) {
+    let amplitude = params.amplitude || 1.0;
+    let waveLength = params.waveLength || 128.0;
+    const octave = params.octave || 8;
+    const divisor = params.divisor || 4.0;
+
+    const generators = [];
+    for (let i = 0; i < octave; i++) {
+      generators.push(
+        new Perlin1DNoiseGenerator({
+          amplitude,
+          waveLength,
+        })
+      );
+
+      amplitude /= divisor;
+      waveLength /= divisor;
+    }
+
+    this.composite = new CompositeNoiseGenerator(generators);
+  }
+
+  nextValue(): number {
+    return this.composite.nextValue();
+  }
+}
+
 export default {
   randNormal,
+  CompositeNoiseGenerator,
   Perlin1DNoiseGenerator,
+  Perlin1DHarmonicNoiseGenerator,
 };
