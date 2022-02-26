@@ -18,8 +18,9 @@ import scene1b from "./scenes/scene1b";
 import scene2 from "./scenes/scene2";
 import scene3 from "./scenes/scene3";
 import oscilatorDemo from "./scenes/oscillatorDemo";
+import perlinDemo from "./scenes/perlinDemo";
 
-const scenes = [scene1, scene1b, scene2, scene3, oscilatorDemo];
+const scenes = [scene1, scene1b, scene2, scene3, oscilatorDemo, perlinDemo];
 let selection = scenes.length - 1;
 
 // Add document listeners
