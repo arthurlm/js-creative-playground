@@ -1,6 +1,5 @@
 import { Context, Entity, Scene } from "../context";
 import { Point2 } from "../geometry";
-import { rgba } from "../helpers";
 import { radToDeg } from "../math";
 
 const scene = new Scene();

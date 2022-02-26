@@ -1,6 +1,6 @@
+import { Rgba } from "../colors";
 import { Context, Scene } from "../context";
 import { Point2 } from "../geometry";
-import { rgba } from "../helpers";
 import { degToRad, randRange } from "../math";
 
 class Particle {
@@ -45,7 +45,12 @@ class Particle {
       // Setup color
       const color = (distanceToCenter * distanceToCenter) / dist_line_visible;
 
-      context.ctx.strokeStyle = rgba(color, color, color, this.alpha);
+      context.ctx.strokeStyle = new Rgba(
+        color,
+        color,
+        color,
+        this.alpha
+      ).toString();
 
       // Draw direction
       context.ctx.beginPath();
@@ -55,7 +60,13 @@ class Particle {
     }
 
     // Real draw 😎 !
-    context.ctx.fillStyle = rgba(1, 1, 1, this.alpha * this.alpha);
+    context.ctx.fillStyle = new Rgba(
+      1,
+      1,
+      1,
+      this.alpha * this.alpha
+    ).toString();
+
     context.ctx.beginPath();
     context.ctx.arc(
       this.position.x,

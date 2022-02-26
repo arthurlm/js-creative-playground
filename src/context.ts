@@ -1,4 +1,4 @@
-import { rgba } from "./helpers";
+import { Rgba } from "./colors";
 
 export class Context {
   public lastRequestFrameId?: number;
@@ -73,7 +73,7 @@ export class Scene {
     const ctx = context.ctx;
 
     if (this.frameOpacity < 1.0) {
-      ctx.fillStyle = rgba(0, 0, 0, this.frameOpacity);
+      ctx.fillStyle = new Rgba(0, 0, 0, this.frameOpacity).toString();
       ctx.fillRect(0, 0, context.width, context.height);
     } else {
       ctx.clearRect(0, 0, context.width, context.height);
