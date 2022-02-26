@@ -20,6 +20,7 @@ export class Context {
     this.tickCount = 0;
     this.timestamp = Date.now() / 1000.0;
     this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.lineWidth = 1;
   }
 
   nextTick() {
