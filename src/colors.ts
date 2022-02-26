@@ -78,8 +78,17 @@ export class Rgba {
   }
 }
 
-export function buildPalette(value: string): Rgba[] {
-  return value.split("-").map((x) => Rgba.fromHex(`#${x}`));
+export class Palette {
+  public colors: Rgba[];
+
+  constructor(value: string) {
+    this.colors = value.split("-").map((x) => Rgba.fromHex(`#${x}`));
+  }
+
+  getColor(index: number): Rgba {
+    const idx = Math.floor(Math.abs(index)) % this.colors.length;
+    return this.colors[idx];
+  }
 }
 
 export default {

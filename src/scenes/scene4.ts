@@ -1,6 +1,7 @@
-import { buildPalette, Hsla } from "../colors";
+import { Palette, Hsla } from "../colors";
 import { Context, Entity, Scene } from "../context";
 import { Point2, Polygon } from "../geometry";
+import { randRange } from "../math";
 import { LinearOscillator, Oscillator } from "../oscillator";
 import {
   NoiseGenerator,
@@ -8,7 +9,7 @@ import {
   Perlin1DNoiseGenerator,
 } from "../random";
 
-const PALETTE = buildPalette(
+const PALETTE = new Palette(
   "f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-4361ee-4895ef-4cc9f0"
 );
 
@@ -63,7 +64,7 @@ class AnimatedPolygon extends Polygon {
       amplitude: 8,
     });
 
-    this.color = PALETTE[Math.floor(Math.random() * PALETTE.length)].toHsla();
+    this.color = PALETTE.getColor(randRange(0, 50)).toHsla();
     this.color.lightness *= lightnessRatio;
   }
 
