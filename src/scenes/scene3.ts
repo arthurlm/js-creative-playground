@@ -1,5 +1,5 @@
 import { Hsla, Palette } from "../colors";
-import { Context, Scene } from "../context";
+import { Context, Entity, Scene } from "../context";
 import { Point2, Polygon } from "../geometry";
 import { randRange } from "../math";
 import {
@@ -8,6 +8,7 @@ import {
   Oscillator,
   SineOscilator,
 } from "../oscillator";
+import { NoiseGenerator, Perlin1DHarmonicNoiseGenerator } from "../random";
 
 const palette = new Palette(
   "54478c-2c699a-048ba8-0db39e-16db93-83e377-b9e769-efea5a-f1c453-f29e4c"
@@ -16,13 +17,31 @@ const palette = new Palette(
 const scene = new Scene();
 scene.frameOpacity = 0.05;
 
+class SharedParams implements Entity {
+  angleGenerator: NoiseGenerator;
+  angle: number;
+
+  constructor() {
+    this.angleGenerator = new Perlin1DHarmonicNoiseGenerator({
+      octave: 3,
+    });
+    this.angle = this.angleGenerator.nextValue();
+  }
+
+  annimate(context: Context): void {
+    this.angle = this.angleGenerator.nextValue();
+  }
+
+  draw(context: Context): void {}
+}
+
 class AnimatedPolygon extends Polygon {
   radiusRatio: number;
   color: Hsla;
   lineWidth: number;
   angleOscillator: Oscillator;
 
-  constructor(context: Context) {
+  constructor(context: Context, private shared: SharedParams) {
     super();
 
     this.radiusRatio = 20.0;
@@ -41,7 +60,7 @@ class AnimatedPolygon extends Polygon {
   }
 
   annimate(context: Context): void {
-    const theta = this.angleOscillator.valueFramed(context);
+    const theta = this.angleOscillator.valueFramed(context) + shared.angle;
     const radius = this.radiusRatio;
     this.updatePoints(Point2.center(context), 5, radius, theta);
 
@@ -54,9 +73,15 @@ class AnimatedPolygon extends Polygon {
   }
 }
 
+const shared = new SharedParams();
+
 scene.onStart = (context) => {
+  if (scene.entites.length == 0) {
+    scene.entites.push(shared);
+  }
+
   if (context.tickCount % 20 == 0) {
-    scene.entites.push(new AnimatedPolygon(context));
+    scene.entites.push(new AnimatedPolygon(context, shared));
   }
 };
 
