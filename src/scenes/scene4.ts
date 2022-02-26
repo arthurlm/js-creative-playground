@@ -88,7 +88,7 @@ scene.onStart = (context) => {
     const shared = new SharedState(context);
     scene.entites.push(shared);
 
-    for (let idx = 0; idx < 7; idx++) {
+    for (let idx = 1; idx < 7; idx++) {
       scene.entites.push(new AnimatedPolygon(shared, idx, 2));
       for (let j = 0; j < 5; j++) {
         scene.entites.push(new AnimatedPolygon(shared, idx, 0.2, 0.8));
