@@ -32,17 +32,19 @@ const scenes = [
   scene4,
   scene5,
 ];
-let selection = scenes.length - 2;
+let selection = parseInt(localStorage.getItem("scene.selection") || "0");
 
 // Add document listeners
 document.addEventListener("keyup", (e) => {
   if (e.code == "KeyN" || e.code == "NumpadAdd") {
     selection = (selection + 1) % scenes.length;
+    localStorage.setItem("scene.selection", `${selection}`);
     restartLoop();
   }
 
   if (e.code == "KeyP" || e.code == "NumpadSubtract") {
     selection = selection == 0 ? scenes.length - 1 : selection - 1;
+    localStorage.setItem("scene.selection", `${selection}`);
     restartLoop();
   }
 
