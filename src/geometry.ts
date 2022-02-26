@@ -115,9 +115,10 @@ export class Polygon implements Entity {
     thetaOffset: number
   ): void {
     this.points = [];
+    const pointCountInt = Math.floor(pointCount);
 
-    for (let i = 0; i < pointCount; i++) {
-      const theta = 2 * Math.PI * (i / pointCount);
+    for (let i = 0; i < pointCountInt; i++) {
+      const theta = 2 * Math.PI * (i / pointCountInt);
 
       this.points.push(
         new Point2(
