@@ -20,6 +20,7 @@ import scene3 from "./scenes/scene3";
 import oscilatorDemo from "./scenes/oscillatorDemo";
 import perlinDemo from "./scenes/perlinDemo";
 import scene4 from "./scenes/scene4";
+import scene5 from "./scenes/scene5";
 
 const scenes = [
   scene1,
@@ -29,6 +30,7 @@ const scenes = [
   oscilatorDemo,
   perlinDemo,
   scene4,
+  scene5,
 ];
 let selection = scenes.length - 1;
 

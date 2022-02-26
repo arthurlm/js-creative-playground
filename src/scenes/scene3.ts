@@ -6,6 +6,7 @@ import {
   ConstOscillator,
   LinearOscillator,
   Oscillator,
+  SineOscilator,
 } from "../oscillator";
 
 const scene = new Scene();
@@ -25,7 +26,13 @@ class AnimatedPolygon extends Polygon {
     this.lineWidth = randRange(0, 5);
 
     this.angleOscillator = new CompositeOscillator([
-      new LinearOscillator({
+      new SineOscilator({
+        speed: 0.002,
+        min: 0,
+        max: 2 * Math.PI,
+        thetaOffset: context.tickCount,
+      }),
+      new SineOscilator({
         speed: 0.005,
         min: 0,
         max: 2 * Math.PI,

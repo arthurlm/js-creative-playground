@@ -49,7 +49,7 @@ const scene = new Scene();
 scene.onStart = (context) => {
   if (scene.entites.length == 0) {
     for (let idx = 0; idx < 7; idx++) {
-      scene.entites.push(new AnimatedPolygon(idx, 2, 60));
+      scene.entites.push(new AnimatedPolygon(idx, 2, 90));
       for (let j = 0; j < 5; j++) {
         scene.entites.push(new AnimatedPolygon(idx, 0.2, 40));
       }
