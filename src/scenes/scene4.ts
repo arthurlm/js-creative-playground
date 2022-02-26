@@ -1,20 +1,54 @@
-import { Context, Scene } from "../context";
+import { buildPalette, Hsla } from "../colors";
+import { Context, Entity, Scene } from "../context";
 import { Point2, Polygon } from "../geometry";
-import { degToRad, randRange } from "../math";
-import { LinearOscillator, Oscillator, SineOscilator } from "../oscillator";
+import { LinearOscillator, Oscillator } from "../oscillator";
 import {
   NoiseGenerator,
   Perlin1DHarmonicNoiseGenerator,
   Perlin1DNoiseGenerator,
 } from "../random";
 
+const PALETTE = buildPalette(
+  "f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-4361ee-4895ef-4cc9f0"
+);
+
+class SharedState implements Entity {
+  private directionX: NoiseGenerator;
+  private directionY: NoiseGenerator;
+
+  public center: Point2;
+
+  constructor(context: Context) {
+    this.directionX = new Perlin1DNoiseGenerator({ amplitude: 200 });
+    this.directionY = new Perlin1DNoiseGenerator({ amplitude: 200 });
+    this.annimate(context);
+  }
+
+  annimate(context: Context): void {
+    this.center = new Point2(
+      context.width / 2 + this.directionX.nextValue() - 100,
+      context.height / 2 + this.directionY.nextValue() - 100
+    );
+  }
+
+  draw(context: Context): void {
+    // NO DRAW !
+    // this is a hack to have global variables
+  }
+}
+
 class AnimatedPolygon extends Polygon {
   radiusGenerator: NoiseGenerator;
   rotationGenerator: Oscillator;
   shapeGenerator: NoiseGenerator;
-  hue: number;
+  color: Hsla;
 
-  constructor(idx: number, public lineWidth: number, public lighness: number) {
+  constructor(
+    public shared: SharedState,
+    idx: number,
+    public lineWidth: number,
+    lightnessRatio: number = 1.0
+  ) {
     super();
     this.radiusGenerator = new Perlin1DHarmonicNoiseGenerator({
       amplitude: 128 * idx,
@@ -28,18 +62,20 @@ class AnimatedPolygon extends Polygon {
     this.shapeGenerator = new Perlin1DNoiseGenerator({
       amplitude: 8,
     });
-    this.hue = Math.floor(randRange(0, 360));
+
+    this.color = PALETTE[Math.floor(Math.random() * PALETTE.length)].toHsla();
+    this.color.lightness *= lightnessRatio;
   }
 
   override annimate(context: Context): void {
     const radius = this.radiusGenerator.nextValue();
     const offset = this.rotationGenerator.valueTimed(context);
     const shape = this.shapeGenerator.nextValue() + 8;
-    this.updatePoints(Point2.center(context), shape, radius, -offset);
+    this.updatePoints(this.shared.center, shape, radius, -offset);
   }
 
   override drawBegin(context: Context): void {
-    context.ctx.strokeStyle = `hsl(${this.hue}, 30%, ${this.lighness}%)`;
+    context.ctx.strokeStyle = this.color.toString();
     context.ctx.lineWidth = this.lineWidth;
   }
 }
@@ -48,13 +84,16 @@ const scene = new Scene();
 
 scene.onStart = (context) => {
   if (scene.entites.length == 0) {
+    const shared = new SharedState(context);
+    scene.entites.push(shared);
+
     for (let idx = 0; idx < 7; idx++) {
-      scene.entites.push(new AnimatedPolygon(idx, 2, 90));
+      scene.entites.push(new AnimatedPolygon(shared, idx, 2));
       for (let j = 0; j < 5; j++) {
-        scene.entites.push(new AnimatedPolygon(idx, 0.2, 40));
+        scene.entites.push(new AnimatedPolygon(shared, idx, 0.2, 0.8));
       }
       for (let j = 0; j < 50; j++) {
-        scene.entites.push(new AnimatedPolygon(idx, 0.05, 30));
+        scene.entites.push(new AnimatedPolygon(shared, idx, 0.05, 0.7));
       }
     }
   }
