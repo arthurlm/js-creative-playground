@@ -1,4 +1,5 @@
 import { Context, mainLoop } from "./context";
+import scenes from "./scenes/index";
 
 // Get HTML elements from DOM
 const canvas = document.getElementById("main-canvas") as HTMLCanvasElement;
@@ -12,27 +13,11 @@ canvas.height = window.innerHeight - padding;
 // Create main context from HTML elements
 const context = new Context(canvas, debugDisplay);
 
-// Import all scenes and build vector from them
-import scene1 from "./scenes/scene1";
-import scene1b from "./scenes/scene1b";
-import scene2 from "./scenes/scene2";
-import scene3 from "./scenes/scene3";
-import oscilatorDemo from "./scenes/oscillatorDemo";
-import perlinDemo from "./scenes/perlinDemo";
-import scene4 from "./scenes/scene4";
-import scene5 from "./scenes/scene5";
-
-const scenes = [
-  scene1,
-  scene1b,
-  scene2,
-  scene3,
-  oscilatorDemo,
-  perlinDemo,
-  scene4,
-  scene5,
-];
-let selection = parseInt(localStorage.getItem("scene.selection") || "0");
+// Get scene selection from local storage
+let selection = Math.min(
+  parseInt(localStorage.getItem("scene.selection") || "0"),
+  scenes.length - 1
+);
 
 // Add document listeners
 document.addEventListener("keyup", (e) => {
