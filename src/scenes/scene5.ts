@@ -4,7 +4,7 @@ import { Point2 } from "../geometry";
 import { randRange } from "../math";
 import { NoiseGenerator, Perlin1DNoiseGenerator } from "../random";
 
-const scene = new Scene();
+const scene = new Scene(__filename);
 
 const POINT_COUNT = 25.0;
 const PALETTE = new Palette(

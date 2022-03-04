@@ -2,7 +2,7 @@ import { Context, Entity, Scene } from "../context";
 import { Point2 } from "../geometry";
 import { radToDeg } from "../math";
 
-const scene = new Scene();
+const scene = new Scene(__filename);
 scene.frameOpacity = 0.2;
 
 const MAIN_CIRCLE_RADIUS = 350;

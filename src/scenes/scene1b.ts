@@ -56,7 +56,7 @@ class Particle implements Entity {
   }
 }
 
-const scene = new Scene();
+const scene = new Scene(__filename);
 
 scene.frameOpacity = 0.05;
 

@@ -37,7 +37,7 @@ class Circle implements Entity {
   }
 }
 
-const scene = new Scene();
+const scene = new Scene(__filename);
 
 scene.onStart = (context) => {
   if (scene.entites.length == 0) {

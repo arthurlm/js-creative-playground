@@ -80,7 +80,7 @@ class Particle {
   }
 }
 
-const scene = new Scene();
+const scene = new Scene(__filename);
 
 scene.onStart = (context) => {
   while (scene.entites.length < 1000) {

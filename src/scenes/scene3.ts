@@ -14,7 +14,7 @@ const palette = new Palette(
   "54478c-2c699a-048ba8-0db39e-16db93-83e377-b9e769-efea5a-f1c453-f29e4c"
 );
 
-const scene = new Scene();
+const scene = new Scene(__filename);
 scene.frameOpacity = 0.05;
 
 class SharedParams implements Entity {
