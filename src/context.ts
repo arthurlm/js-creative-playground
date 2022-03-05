@@ -72,11 +72,11 @@ export class Scene {
   private clearScreen(context: Context) {
     const ctx = context.ctx;
 
-    if (this.frameOpacity < 1.0) {
+    if (this.frameOpacity == 1.0) {
+      ctx.clearRect(0, 0, context.width, context.height);
+    } else if (this.frameOpacity > 0.0) {
       ctx.fillStyle = new Rgba(0, 0, 0, this.frameOpacity).toString();
       ctx.fillRect(0, 0, context.width, context.height);
-    } else {
-      ctx.clearRect(0, 0, context.width, context.height);
     }
   }
 
