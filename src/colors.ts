@@ -1,3 +1,5 @@
+import { randRange } from "./math";
+
 export class Hsla {
   constructor(
     public hue: number,
@@ -88,6 +90,10 @@ export class Palette {
   getColor(index: number): Rgba {
     const idx = Math.floor(Math.abs(index)) % this.colors.length;
     return this.colors[idx];
+  }
+
+  getRandColor(): Rgba {
+    return this.getColor(randRange(0, this.colors.length));
   }
 }
 
