@@ -6,6 +6,7 @@ import oscilatorDemo from "./oscillatorDemo";
 import perlinDemo from "./perlinDemo";
 import scene4 from "./scene4";
 import scene5 from "./scene5";
+import scene6 from "./scene6";
 
 export default [
   scene1,
@@ -16,4 +17,5 @@ export default [
   // perlinDemo,
   scene4,
   scene5,
+  scene6,
 ];
