@@ -26,6 +26,8 @@ body {
 
   padding: 10px;
   margin: 0;
+
+  overflow: hidden;
 }
 
 #debug-display {
