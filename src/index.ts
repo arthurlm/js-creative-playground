@@ -7,8 +7,9 @@ const debugDisplay = document.getElementById("debug-display");
 
 // Setup canvas size
 const padding = 50;
-canvas.width = window.innerWidth - padding;
-canvas.height = window.innerHeight - padding;
+const screenSize = Math.min(window.innerWidth, window.innerHeight) - padding;
+canvas.width = screenSize;
+canvas.height = screenSize;
 
 // Create main context from HTML elements
 const context = new Context(canvas, debugDisplay);
