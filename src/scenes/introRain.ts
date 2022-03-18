@@ -46,8 +46,10 @@ class RainDrop extends Polygon {
 const scene = new Scene(__filename);
 
 scene.onStart = (context) => {
-  if (Math.floor(randRange(0, 5)) == 0) {
-    scene.entites.push(new RainDrop(context));
+  if (Math.floor(randRange(0, 20)) == 0) {
+    for (let i = 0; i < 10; i++) {
+      scene.entites.push(new RainDrop(context));
+    }
   }
 };
 
