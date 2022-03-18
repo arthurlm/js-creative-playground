@@ -125,9 +125,35 @@ export class Perlin1DHarmonicNoiseGenerator implements NoiseGenerator {
   }
 }
 
+/**
+ * Generate 1 value every each period
+ */
+export class DiracNoiseGenerator implements NoiseGenerator {
+  private timeout: number;
+
+  constructor(public period_ms: number) {
+    if (period_ms < 0) {
+      throw new Error("period cannot be lower than 0");
+    }
+
+    this.timeout = 0;
+  }
+
+  nextValue(): number {
+    const now = Date.now();
+    if (this.timeout < now) {
+      this.timeout = now + this.period_ms;
+      return 1;
+    }
+
+    return 0;
+  }
+}
+
 export default {
   randNormal,
   CompositeNoiseGenerator,
   Perlin1DNoiseGenerator,
   Perlin1DHarmonicNoiseGenerator,
+  DiracNoiseGenerator,
 };
