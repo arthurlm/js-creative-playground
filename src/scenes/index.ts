@@ -8,6 +8,7 @@ import scene4 from "./scene4";
 import scene5 from "./scene5";
 import scene6 from "./scene6";
 import scene7 from "./scene7";
+import introRain from "./introRain";
 
 export default [
   scene1,
@@ -20,4 +21,5 @@ export default [
   scene5,
   scene6,
   scene7,
+  introRain,
 ];
