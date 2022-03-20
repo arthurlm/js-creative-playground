@@ -76,6 +76,7 @@ export class Scene {
       ctx.clearRect(0, 0, context.width, context.height);
     } else if (this.frameOpacity > 0.0) {
       ctx.fillStyle = new Rgba(0, 0, 0, this.frameOpacity).toString();
+      ctx.shadowBlur = 0;
       ctx.fillRect(0, 0, context.width, context.height);
     }
   }
