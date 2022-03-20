@@ -9,6 +9,7 @@ import scene5 from "./scene5";
 import scene6 from "./scene6";
 import scene7 from "./scene7";
 import introRain from "./introRain";
+import cube from "./cube";
 
 export default [
   scene1,
@@ -22,4 +23,5 @@ export default [
   scene6,
   scene7,
   introRain,
+  cube,
 ];
