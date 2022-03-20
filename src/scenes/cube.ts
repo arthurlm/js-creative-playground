@@ -46,8 +46,14 @@ class Cube implements Entity {
 
   draw(context: Context): void {
     const ctx = context.ctx;
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
+
+    ctx.strokeStyle = "#ade8f4";
+    ctx.setLineDash([16]);
+    ctx.lineWidth = 8;
+    ctx.lineJoin = "bevel";
+
+    ctx.shadowColor = "#0077b6";
+    ctx.shadowBlur = 5;
 
     const points = this.coord
       .dot(CAMERA_POS)
@@ -95,5 +101,7 @@ scene.onStart = (context) => {
     scene.entites.push(new Cube(context));
   }
 };
+
+scene.frameOpacity = 0;
 
 export default scene;
