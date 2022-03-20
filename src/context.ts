@@ -56,7 +56,7 @@ export class Scene {
   public onStart: (context: Context) => void;
   public onEnd: (context: Context) => void;
 
-  constructor(public filename: string) {
+  constructor(public name: string) {
     function identity() {}
 
     this.frameOpacity = 1.0;
@@ -124,7 +124,7 @@ export function mainLoop(
 
     if (options.debugEnabled) {
       context.setDebugInfo([
-        `name: ${scene.filename}`,
+        `name: ${scene.name}`,
         `entity count: ${scene.entites.length}`,
         `update time: ${tUpdateEnd - tUpdateStart}ms`,
         `rendering time: ${tRenderEnd - tRenderStart}ms`,
